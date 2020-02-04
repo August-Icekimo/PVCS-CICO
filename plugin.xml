@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <header>
+    <identifier id="com.urbancode.air.module.PvcsCheckout" name="PVCS-Checkout" version="1"/>
+    <description>
+      Support for checking out from PVCS.
+    </description>
+    <tag>Repositories/Source/PVCS checkout</tag>
+  </header>
+  
+  <!-- ==================================== -->
+  <!--   SCM STEPS                          -->
+  <!-- ==================================== -->
+  <step-type name="PVCS Export">
+    <description>Perform a PVCS checkout</description>
+  
+    <properties>
+      <property name="pcliPath" required="true">
+        <property-ui description="Path to the PCLI executable." label="PCLI Path" type="textBox"/>
+      </property>
+    
+      <property name="databasePath" required="true">
+        <property-ui description="Path to the PVCS database." label="Database Path" type="textBox"/>
+      </property>
+    
+      <property name="basePath" required="true">
+        <property-ui description="Base path of checked out files" label="Base Path" type="textBox"/>
+      </property>
+    
+      <property name="projectPath" required="true">
+        <property-ui description="Path to PVCS project (folder) relative to database" label="Project Path" type="textBox"/>
+      </property>
+    
+      <property name="branch">
+        <property-ui description="Pull the latest files from this branch. (Only specify one of these values)" label="Branch" type="textBox"/>
+      </property>
+      
+      <property name="label">
+        <property-ui description="Pull the latest files with this label (Only specify one of these values)" label="Label" type="textBox"/>
+      </property>
+      
+      <property name="promotionGroup">
+        <property-ui description="Pull the latest files in this promotion group. (Only specify one of these values)" label="Promotion Group" type="textBox"/>
+      </property>
+
+      <property name="cleanWorkspace">
+        <property-ui description="Erase all files from the workspace before performing export." label="Clean Workspace" type="checkBox"/>
+      </property>
+
+      <property name="user">
+        <property-ui description="Authentication user" label="User" type="textBox"/>
+      </property>
+
+      <property name="password">
+        <property-ui description="Authentication password" label="Password" type="secureBox"/>
+      </property>
+    </properties>
+    
+    <post-processing>
+      <![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put("Status", "Failure");
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+      ]]>
+    </post-processing>
+    
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:lib/PVCS-Checkout.jar"/>
+      <arg file="pvcs_checkout.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+    </command>
+  </step-type>
+</plugin>
