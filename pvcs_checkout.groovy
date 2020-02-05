@@ -51,6 +51,7 @@ def runCommand = {def message, def command ->
     process.consumeProcessOutput(out, out)
     process.getOutputStream().close()
     process.waitFor()
+    // express exit value in pcli references. 
     if (process.exitValue()) {
         switch ( process.exitValue()) {
             case "0":
@@ -83,7 +84,7 @@ def runCommand = {def message, def command ->
             case "-12":
             println("A security exception occurred.")
             break
-            case "-2":
+            case "-13":
             println("An unknown problem.")
             break
         }
