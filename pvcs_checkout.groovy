@@ -113,7 +113,7 @@ if (!workDir.isDirectory()) {
   
 def command = [pcliPath]
 command << "Get"
-// Depose Arg "Quietly ignores nonexistent entities."", we need noise.
+// DEPRECATED Arg "Quietly ignores nonexistent entities."", we need noise.
 //command << "-qe"
 command << "-y"
 // Args "-o" 
