@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.module.PvcsCheckout" name="PVCS-Checkout" version="1"/>
+    <identifier id="com.urbancode.air.module.PvcsCICO" name="PVCS-CICO" version="1"/>
     <description>
-      Support for checking out from PVCS.
+      Support for checking in / out from PVCS.
     </description>
-    <tag>Repositories/Source/PVCS checkout</tag>
+    <tag>Repositories/Source/PVCS checkout checkin</tag>
   </header>
   
   <!-- ==================================== -->
   <!--   SCM STEPS                          -->
   <!-- ==================================== -->
-  <!-- PVCS Checkout -->
+  <!-- PVCS Checkout with GET command-->
   <step-type name="PVCS Checkout">
     <description>Checkout the project codes</description>
   
     <properties>
       <property name="pcliPath" required="true">
-        <property-ui description="Path to the PCLI executable." label="PCLI Path" type="textBox"/>
+        <property-ui description="Path to the PCLI executable." label="PCLI Path" default-value="C:\Program Files (x86)\Serena\vm\win64\bin\pcli.exe" type="textBox"/>
       </property>
     
       <property name="databasePath" required="true">
@@ -25,7 +25,7 @@
       </property>
     
       <property name="basePath" required="true">
-        <property-ui description="Base path of checked out files" label="Base Path" type="textBox"/>
+        <property-ui description="Base path of Get / checked out files" label="Base Path" type="textBox"/>
       </property>
     
       <property name="projectPath" required="true">
@@ -33,15 +33,15 @@
       </property>
     
       <property name="branch">
-        <property-ui description="Pull the latest files from this branch. (Only specify one of these values)" label="Branch" type="textBox"/>
+        <property-ui description="Get the latest files from this branch. (Only specify one of these values)" label="Branch" type="textBox"/>
       </property>
       
       <property name="label" required="true">
-        <property-ui description="Pull the latest files with this label (Only specify one of these values)" label="Label" type="textBox"/>
+        <property-ui description="Get the latest files with this label (Only specify one of these values)" label="Label" type="textBox"/>
       </property>
       
       <property name="promotionGroup">
-        <property-ui description="Pull the latest files in this promotion group. (Only specify one of these values)" label="Promotion Group" type="textBox"/>
+        <property-ui description="Get the latest files in this promotion group. (Only specify one of these values)" label="Promotion Group" type="textBox"/>
       </property>
 
       <property name="cleanWorkspace">
@@ -55,6 +55,11 @@
       <property name="password" required="true">
         <property-ui description="Authentication password" label="Password" type="secureBox"/>
       </property>
+
+      <property name="lockPath" required="true">
+        <property-ui description="the subproject path to lock / checkout" default-value="\" label="unlockPath" type="textBox"/>
+      </property>
+
     </properties>
     
     <post-processing>
@@ -77,13 +82,14 @@
     </command>
   </step-type>
 
-  <!-- PVCS Checkin -->
+  <!-- PVCS Checkin with PUT command -->
     <step-type name="PVCS Checkin">
     <description>checkin the Artifacts</description>
   
     <properties>
       <property name="pcliPath" required="true">
-        <property-ui description="Path to the PCLI executable." label="PCLI Path" type="textBox"/>
+       <!-- chinese description test -->
+        <property-ui description="Path to the PCLI executable.輸入PCLI路徑" label="PCLI Path" default-value="C:\Program Files (x86)\Serena\vm\win64\bin\pcli.exe" type="textBox"/>
       </property>
     
       <property name="databasePath" required="true">
@@ -91,7 +97,7 @@
       </property>
     
       <property name="basePath" required="true">
-        <property-ui description="Base path of checked out files" label="Base Path" type="textBox"/>
+        <property-ui description="Base path of Put / checked in files" label="Base Path" type="textBox"/>
       </property>
     
       <property name="projectPath" required="true">
@@ -99,19 +105,19 @@
       </property>
     
       <property name="branch">
-        <property-ui description="Push the latest files to this branch. (Only specify one of these values)" label="Branch" type="textBox"/>
+        <property-ui description="Put the latest files to this branch. (Only specify one of these values)" label="Branch" type="textBox"/>
       </property>
       
       <property name="label" required="true">
-        <property-ui description="Push the latest files with this label (Only specify one of these values)" label="Label" type="textBox"/>
+        <property-ui description="Put the latest files with this label (Only specify one of these values)" label="Label" type="textBox"/>
       </property>
       
       <property name="promotionGroup">
-        <property-ui description="Pull the latest files in this promotion group. (Only specify one of these values)" label="Promotion Group" type="textBox"/>
+        <property-ui description="Put the latest files in this promotion group. (Only specify one of these values)" label="Promotion Group" type="textBox"/>
       </property>
 
       <property name="cleanWorkspace">
-        <property-ui description="Erase all files from the workspace before performing export." label="Clean Workspace" type="checkBox"/>
+        <property-ui description="Erase all files from the workspace before performing export." default-value="false" label="Clean Workspace" type="checkBox"/>
       </property>
 
       <property name="user" required="true">
@@ -121,8 +127,18 @@
       <property name="password" required="true">
         <property-ui description="Authentication password" label="Password" type="secureBox"/>
       </property>
+
+      <property name="unlockPath" required="true">
+        <property-ui description="the subproject path to unlock / checkout" label="unlockPath" type="textBox"/>
+      </property>
+      
+      <property name="changeDescription" required="true">
+        <property-ui description="The description to use in change history." default-value="\" label="changeDescription" type="textBox"/>
+      </property>
+
     </properties>
-    
+     
+
     <post-processing>
       <![CDATA[
         if (properties.get("exitCode") != 0) {
