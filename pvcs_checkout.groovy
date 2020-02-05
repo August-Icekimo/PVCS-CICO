@@ -28,6 +28,7 @@ def promotionGroup = props['promotionGroup'];
 def cleanWorkspace = props['cleanWorkspace']?.toBoolean();
 def user           = props['user'];
 def password       = props['password'];
+def lockPath       = props['lockPath'];     //TODO
 
 def id = null
 if (user != null && user.trim().length() > 0) {
@@ -88,7 +89,7 @@ def runCommand = {def message, def command ->
             println("An unknown problem.")
             break
         }
-        throw new Exception("Command failed with exit code: " + process.exitValue())
+        throw new Exception("GET Command failed with exit code: " + process.exitValue())
     }
 }
 
@@ -114,9 +115,12 @@ if (!workDir.isDirectory()) {
   
 def command = [pcliPath]
 command << "Get"
+
 // DEPRECATED Arg "Quietly ignores nonexistent entities."", we need noise.
 //command << "-qe"
+
 command << "-y"
+
 // Args "-o" 
 // Overrides the workfile locations defined in the project and versioned files,
 // and instead uses a hierarchy of directories that mirror the structure and names of the
@@ -124,6 +128,7 @@ command << "-y"
 // project that has an absolute workfile location associated with it will be copied to
 // that workfile location, even if you specify a workspace or use the -a option.
 command << "-o"
+
 // Args "-bp" 
 // Specifies the base project path to use in calculating workfile locations when
 // the -a option has been specified.
@@ -133,12 +138,15 @@ command << "-bp" + basePath
 // to lock. By default, the default revision defined for the workspace is acted on. Note the revision
 // was assign with the -r args below.
 command << "-l"
+
 if (id != null) {
     command << "-id" + id
 }
+
 // Args "-pr" 
 // Sets the current project database for this command execution.
 command << "-pr" + databasePath
+
 // Args "-r"
 // Specifies the revision, promotion group, or version to act upon.
 if (label != null && label.trim().length() > 0) {
@@ -150,6 +158,7 @@ else if (branch != null && branch.trim().length() > 0) {
 else if (promotionGroup != null && promotionGroup.trim().length() > 0) {
     command << "-g" + promotionGroup.trim() 
 }
+
 //Args "-a" 
 // Specifies an alternate location to place workfiles, rather than the location defined in the
 // workspace. See also the -o and -bp options.
@@ -163,8 +172,11 @@ else if (promotionGroup != null && promotionGroup.trim().length() > 0) {
 //  subdirectories may be created depending on how the -bp option was used.
 command << "-a" + workDir.absolutePath
 command << projectPath
+
 //Args "-z" Includes versioned files in subprojects.
-command << "-z" + "/"
+command << "-z" 
+command << lockPath
+
 //------------------------------------------------------------------------------
 // EXECUTE
 //------------------------------------------------------------------------------
