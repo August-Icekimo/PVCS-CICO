@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.module.PvcsCICO" name="PVCS-CICO" version="1"/>
+    <identifier id="com.urbancode.air.module.pvcscico" name="PVCS-CICO" version="1"/>
     <description>
       Support for checking in / out from PVCS.
     </description>
@@ -89,7 +89,7 @@
     <properties>
       <property name="pcliPath" required="true">
        <!-- chinese description test -->
-        <property-ui description="Path to the PCLI executable.輸入PCLI路徑" label="PCLI Path" default-value="C:\Program Files (x86)\Serena\vm\win64\bin\pcli.exe" type="textBox"/>
+        <property-ui description="Path to the PCLI executable." label="PCLI Path" default-value="C:\Program Files (x86)\Serena\vm\win64\bin\pcli.exe" type="textBox"/>
       </property>
     
       <property name="databasePath" required="true">
@@ -129,11 +129,11 @@
       </property>
 
       <property name="unlockPath" required="true">
-        <property-ui description="the subproject path to unlock / checkout" label="unlockPath" type="textBox"/>
+        <property-ui description="the subproject path to unlock / checkout" default-value="\" label="unlockPath" type="textBox"/>
       </property>
       
       <property name="changeDescription" required="true">
-        <property-ui description="The description to use in change history." default-value="\" label="changeDescription" type="textBox"/>
+        <property-ui description="The description to use in change history." label="changeDescription" type="textBox"/>
       </property>
 
     </properties>
@@ -153,7 +153,7 @@
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
       <arg path="classes:lib/PVCS-Checkout.jar"/>
-      <arg file="pvcs_checkout.groovy"/>
+      <arg file="pvcs_checkin.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
     </command>

@@ -10,10 +10,10 @@
   or share their use case to help grow your plugin's functionality. 
   -->
   
-  <author name="UrbanCode">
-    <organization>UrbanCode</organization>
-    <email>info@urbancode.com</email>
-    <website>http://urbancode.com</website>
+  <author name="August Icekimo Chen">
+    <organization>DTC Cortex Consult</organization>
+    <email>icekimo.chen@ims.com.tw</email>
+    <website>http://www.dtc-tpe.com.tw</website>
     <bio/>
   </author>
   
@@ -104,10 +104,10 @@
   </meta-html>
     
   <!-- Do not change the release-version, the build process injects it. -->
-  <release-version>226</release-version>
+  <release-version>206</release-version>
 
     <!-- Do not change the server-version, the build process injects it. -->
-    <server-version>4.5.1</server-version>
+    <server-version>1.1.1</server-version>
 
     <release-notes>
     <!--
