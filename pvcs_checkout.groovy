@@ -20,7 +20,7 @@ finally {
 
 def pcliPath       = props['pcliPath'];
 def databasePath   = props['databasePath'];
-// def basePath       = props['basePath'];
+def basePath       = props['basePath'];
 // def projectPath    = props['projectPath'];
 // def branch         = props['branch'];
 // def label          = props['label'];
@@ -32,6 +32,7 @@ def lockPath       = props['lockPath'];
 def preCMD       = props['preCMD'];
 def postCMD       = props['postCMD'];
 
+// pcli take " -idUsername:Password format"
 def id = null
 if (user != null && user.trim().length() > 0) {
     if (password != null && password.trim().length() > 0) {
@@ -116,18 +117,16 @@ if (!workDir.isDirectory()) {
 //------------------------------------------------------------------------------
   
 def command = [pcliPath]
-//command: C:\Program Files (x86)\Serena\vm\win64\bin\pcli.exe Get 
-// -pr\\VMFS\DEOM -idAdmin:**** -r1.0 -aD -o -l -z /
-// EXPACTED
-// -pr\\VMFS\DEOM -idAdmin:***** -aD:\ws\Judy -l -o -z /
+
+//Funnel the command you are trying to execute through the run command,
+//  and pass it either -y or -n. Since the run command strips quotes
+//  by default it is wise to also pass it the -ns (no strip) option.
 command << preCMD
 
 command << "Get"
 
 // DEPRECATED Arg "Quietly ignores nonexistent entities."", we need noise.
 //command << "-qe"
-
-//command << "-y"
 
 // Args "-pr" 
 // Sets the current project database for this command execution.
@@ -160,7 +159,8 @@ if (id != null) {
 //  original name.
 //  If the -bp option is used, the leafname is always assumed to be a directory; additional
 //  subdirectories may be created depending on how the -bp option was used.
-command << "-a" + workDir.absolutePath
+// command << "-a" + workDir.absolutePath + lockPath
+command << "-a" + basePath + "\\" + lockPath // Windows Style
 
 // Args "-o" 
 // Overrides the workfile locations defined in the project and versioned files,
@@ -185,11 +185,11 @@ command << "-l"
 
 //Args "-z" Includes versioned files in subprojects.
 command << "-z" 
-command << lockPath
+command << "/" + lockPath
 command << postCMD
 
 //------------------------------------------------------------------------------
 // EXECUTE
 //------------------------------------------------------------------------------
 
-runCommand('PVCS Checkout', command)
+runCommand('PVCS Checkout and lock', command)

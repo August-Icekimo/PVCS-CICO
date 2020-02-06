@@ -21,12 +21,12 @@
       </property>
     
       <property name="databasePath" required="true">
-        <property-ui description="Path to the PVCS database." label="Database Path" type="textBox"/>
+        <property-ui description="Path to the PVCS database." default-value="\\VMFS\${p:component.name}" label="Database Path" type="textBox"/>
       </property>
     
-      <!-- <property name="basePath" required="true">
-        <property-ui description="Base path of Get / checked out files" label="Base Path" type="textBox"/>
-      </property> -->
+      <property name="basePath" required="true">
+        <property-ui description="Base path of Get / checked out files, -a" default-value="D:\var\wrk\${p:component.name}" label="Worksoace Path" type="textBox"/>
+      </property>
     
       <!-- <property name="projectPath">
         <property-ui description="Path to PVCS project (folder) relative to database" label="Project Path" type="textBox"/>
@@ -44,9 +44,9 @@
         <property-ui description="Get the latest files in this promotion group. (Only specify one of these values)" label="Promotion Group" type="textBox"/>
       </property> -->
 
-      <property name="cleanWorkspace">
+      <!-- <property name="cleanWorkspace">
         <property-ui description="Erase all files from the workspace before performing export." label="Clean Workspace" type="checkBox"/>
-      </property>
+      </property> -->
 
       <property name="user" required="true">
         <property-ui description="Authentication user" label="User" type="textBox"/>
@@ -57,15 +57,15 @@
       </property>
 
       <property name="lockPath" required="true">
-        <property-ui description="the subproject path to lock / checkout" default-value="\" label="unlockPath" type="textBox"/>
+        <property-ui description="the Artifacts foldername to checkoutand lock" default-value="bin" label="lockPath" type="textBox"/>
       </property>
 
       <property name="preCMD">
-        <property-ui description="the pcli command need to place before default" label="preCMD" type="textBox"/>
+        <property-ui description="the pcli command need to place before get" label="preCMD" type="textBox"/>
       </property>
       
-      <property name="postCMD" required="true">
-        <property-ui description="the pcli command need to place after default" label="postCMD" type="textBox"/>
+      <property name="postCMD">
+        <property-ui description="the pcli command need to place after get" label="postCMD" type="textBox"/>
       </property>
     </properties>
     
