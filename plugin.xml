@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <header>
-    <identifier id="com.urbancode.air.module.pvcscico" name="PVCS-CICO" version="1"/>
+    <identifier id="com.urbancode.air.module.PVCSCICO" name="PVCSCICO" version="1"/>
     <description>
-      Support for checking in / out from PVCS.
+      Support for checkin checkout from PVCS.
     </description>
-    <tag>Repositories/Source/PVCS checkout checkin</tag>
+    <tag>Repositories/Source/PVCS</tag>
   </header>
   
   <!-- ==================================== -->
@@ -117,7 +117,7 @@
       </property>
 
       <property name="cleanWorkspace">
-        <property-ui description="Erase all files from the workspace before performing export." default-value="false" label="Clean Workspace" type="checkBox"/>
+        <property-ui description="Erase all files from the workspace before performing export." label="Clean Workspace" type="checkBox"/>
       </property>
 
       <property name="user" required="true">

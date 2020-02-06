@@ -28,8 +28,8 @@ def promotionGroup = props['promotionGroup'];
 def cleanWorkspace = props['cleanWorkspace']?.toBoolean();
 def user           = props['user'];
 def password       = props['password'];
-def changeDescription   = props['changeDescription'];   //TODO
-def unlockPath           = props['unlockPath'];         //TODO
+def changeDescription   = props['changeDescription'];
+def unlockPath           = props['unlockPath'];
 def id = null
 if (user != null && user.trim().length() > 0) {
     if (password != null && password.trim().length() > 0) {
@@ -130,8 +130,7 @@ command << "-yv"
 // Specifies the change description for the revision.
 // -mdescription specifies a description at the command-line.
 // To end the description, place a period (.) on a line by itself.
-changeDescription = "-m" + changeDescription
-command << "changeDescription"
+changeDescription = "-m" + changeDescription + "."
 
 //Args "-bp"
 // Specifies the base project path to use in calculating workfile locations when -a or -o has

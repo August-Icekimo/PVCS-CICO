@@ -28,7 +28,7 @@ def promotionGroup = props['promotionGroup'];
 def cleanWorkspace = props['cleanWorkspace']?.toBoolean();
 def user           = props['user'];
 def password       = props['password'];
-def lockPath       = props['lockPath'];     //TODO
+def lockPath       = props['lockPath'];
 
 def id = null
 if (user != null && user.trim().length() > 0) {
