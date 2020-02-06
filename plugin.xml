@@ -96,11 +96,11 @@
         <property-ui description="Path to the PVCS database." label="Database Path" type="textBox"/>
       </property>
     
-      <property name="basePath" required="true">
-        <property-ui description="Base path of Put / checked in files" label="Base Path" type="textBox"/>
+      <property name="basePath">
+        <property-ui description="[D] Base path of Put / checked in files" label="Base Path" type="textBox"/>
       </property>
     
-      <property name="projectPath" required="true">
+      <property name="projectPath">
         <property-ui description="Path to PVCS project (folder) relative to database" label="Project Path" type="textBox"/>
       </property>
     
