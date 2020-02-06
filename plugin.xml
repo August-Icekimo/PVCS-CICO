@@ -12,7 +12,7 @@
   <!--   SCM STEPS                          -->
   <!-- ==================================== -->
   <!-- PVCS Checkout with GET command-->
-  <step-type name="PVCS Checkout">
+  <step-type name="Checkout and lock">
     <description>Checkout the project codes</description>
   
     <properties>
@@ -90,7 +90,7 @@
   </step-type>
 
   <!-- PVCS Checkin with PUT command -->
-    <step-type name="PVCS Checkin">
+    <step-type name="Checkin and unlock">
     <description>checkin the Artifacts</description>
   
     <properties>
@@ -107,25 +107,25 @@
         <property-ui description="[D] Base path of Put / checked in files" label="Base Path" type="textBox"/>
       </property>
     
-      <property name="projectPath">
+      <!-- <property name="projectPath">
         <property-ui description="Path to PVCS project (folder) relative to database" label="Project Path" type="textBox"/>
-      </property>
+      </property> -->
     
-      <property name="branch">
+      <!-- <property name="branch">
         <property-ui description="Put the latest files to this branch. (Only specify one of these values)" label="Branch" type="textBox"/>
-      </property>
+      </property> -->
       
       <property name="label" required="true">
         <property-ui description="Put the latest files with this label (Only specify one of these values)" label="Label" type="textBox"/>
       </property>
       
-      <property name="promotionGroup">
+      <!-- <property name="promotionGroup">
         <property-ui description="Put the latest files in this promotion group. (Only specify one of these values)" label="Promotion Group" type="textBox"/>
-      </property>
+      </property> -->
 
-      <property name="cleanWorkspace">
+      <!-- <property name="cleanWorkspace">
         <property-ui description="Erase all files from the workspace before performing export." label="Clean Workspace" type="checkBox"/>
-      </property>
+      </property> -->
 
       <property name="user" required="true">
         <property-ui description="Authentication user" label="User" type="textBox"/>

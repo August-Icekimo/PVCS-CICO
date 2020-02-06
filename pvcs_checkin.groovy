@@ -21,11 +21,11 @@ finally {
 def pcliPath       = props['pcliPath'];
 def databasePath   = props['databasePath'];
 def basePath       = props['basePath'];
-def projectPath    = props['projectPath'];
-def branch         = props['branch'];
+// def projectPath    = props['projectPath'];
+// def branch         = props['branch'];
 def label          = props['label'];
-def promotionGroup = props['promotionGroup'];
-def cleanWorkspace = props['cleanWorkspace']?.toBoolean();
+// def promotionGroup = props['promotionGroup'];
+// def cleanWorkspace = props['cleanWorkspace']?.toBoolean();
 def user           = props['user'];
 def password       = props['password'];
 def changeDescription   = props['changeDescription'];
@@ -53,42 +53,42 @@ def runCommand = {def message, def command ->
     process.getOutputStream().close()
     process.waitFor()
     if (process.exitValue()) {
-    // express exit value in pcli references. 
-        // switch ( process.exitValue()) {
-        //     case "0":
-        //     println("No problem.")
-        //     break
-        //     case "-2":
-        //     println("PCLI command not found.")
-        //     break
-        //     case "-3":
-        //     println("A non-PCLI related error or a command-specific error.")
-        //     break
-        //     case "-6":
-        //     println("An invalid argument was specified.")
-        //     break
-        //     case "-7":
-        //     println("An argument for a flag that is not needed.")
-        //     break
-        //     case "-8":
-        //     println("A missing argument for a flag.")
-        //     break
-        //     case "-9":
-        //     println("Wrong type was specified for an option's argument.")
-        //     break
-        //     case "-10":
-        //     println("The specified file name cannot be read.")
-        //     break
-        //     case "-11":
-        //     println("A required argument is missing.")
-        //     break
-        //     case "-12":
-        //     println("A security exception occurred.")
-        //     break
-        //     case "-13":
-        //     println("An unknown problem.")
-        //     break
-        // }
+    express exit value in pcli references. 
+        switch ( process.exitValue()) {
+            case "0":
+            println("No problem.")
+            break
+            case "-2":
+            println("PCLI command not found.")
+            break
+            case "-3":
+            println("A non-PCLI related error or a command-specific error.")
+            break
+            case "-6":
+            println("An invalid argument was specified.")
+            break
+            case "-7":
+            println("An argument for a flag that is not needed.")
+            break
+            case "-8":
+            println("A missing argument for a flag.")
+            break
+            case "-9":
+            println("Wrong type was specified for an option's argument.")
+            break
+            case "-10":
+            println("The specified file name cannot be read.")
+            break
+            case "-11":
+            println("A required argument is missing.")
+            break
+            case "-12":
+            println("A security exception occurred.")
+            break
+            case "-13":
+            println("An unknown problem.")
+            break
+        }
         throw new Exception("GET Command failed with exit code: " + process.exitValue())
     }
 }
@@ -98,11 +98,11 @@ def runCommand = {def message, def command ->
 // MAY DEPRECATED in future
 //------------------------------------------------------------------------------
 
-if (cleanWorkspace && workDir.isDirectory()) {
-    new AntBuilder().delete(includeemptydirs:'true') {
-        fileset(dir: workDir.path, includes:'**/*', defaultexcludes:'false')
-    }
-}
+// if (cleanWorkspace && workDir.isDirectory()) {
+//     new AntBuilder().delete(includeemptydirs:'true') {
+//         fileset(dir: workDir.path, includes:'**/*', defaultexcludes:'false')
+//     }
+// }
 
 workDir.mkdirs()
 
@@ -151,15 +151,16 @@ if (id != null) {
 }
 
 command << "-pr" + databasePath
-if (label != null && label.trim().length() > 0) {
-    command << "-r" + label.trim()
-}
-else if (branch != null && branch.trim().length() > 0) {
-    command << "-r" + branch.trim()
-}
-else if (promotionGroup != null && promotionGroup.trim().length() > 0) {
-    command << "-g" + promotionGroup.trim() 
-}
+// if (label != null && label.trim().length() > 0) {
+//     command << "-r" + label.trim()
+// }
+// else if (branch != null && branch.trim().length() > 0) {
+//     command << "-r" + branch.trim()
+// }
+// else if (promotionGroup != null && promotionGroup.trim().length() > 0) {
+//     command << "-g" + promotionGroup.trim() 
+// }
+
 //Args "-a" 
 // Specifies an alternate location from which to check in workfiles, rather than the location to
 // which they were checked out. The check out location is used unless you specify either the
@@ -171,9 +172,9 @@ command << projectPath
 //Args "-z" 
 // Includes revisions in subprojects.
 command << "-z" 
-command << unlockPath
+command << "/" + unlockPath
 //------------------------------------------------------------------------------
 // EXECUTE
 //------------------------------------------------------------------------------
 
-runCommand('PVCS Checkin', command)
+runCommand('PVCS Checkin and lable', command)

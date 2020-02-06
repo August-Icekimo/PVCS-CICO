@@ -25,7 +25,7 @@ def basePath       = props['basePath'];
 // def branch         = props['branch'];
 // def label          = props['label'];
 // def promotionGroup = props['promotionGroup'];
-def cleanWorkspace = props['cleanWorkspace']?.toBoolean();
+// def cleanWorkspace = props['cleanWorkspace']?.toBoolean();
 def user           = props['user'];
 def password       = props['password'];
 def lockPath       = props['lockPath'];
@@ -100,11 +100,11 @@ def runCommand = {def message, def command ->
 // PREPARE WORKING DIRECTORY
 //------------------------------------------------------------------------------
 
-if (cleanWorkspace && workDir.isDirectory()) {
-    new AntBuilder().delete(includeemptydirs:'true') {
-        fileset(dir: workDir.path, includes:'**/*', defaultexcludes:'false')
-    }
-}
+// if (cleanWorkspace && workDir.isDirectory()) {
+//     new AntBuilder().delete(includeemptydirs:'true') {
+//         fileset(dir: workDir.path, includes:'**/*', defaultexcludes:'false')
+//     }
+// }
 
 workDir.mkdirs()
 
