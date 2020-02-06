@@ -20,15 +20,17 @@ finally {
 
 def pcliPath       = props['pcliPath'];
 def databasePath   = props['databasePath'];
-def basePath       = props['basePath'];
-def projectPath    = props['projectPath'];
-def branch         = props['branch'];
-def label          = props['label'];
-def promotionGroup = props['promotionGroup'];
+// def basePath       = props['basePath'];
+// def projectPath    = props['projectPath'];
+// def branch         = props['branch'];
+// def label          = props['label'];
+// def promotionGroup = props['promotionGroup'];
 def cleanWorkspace = props['cleanWorkspace']?.toBoolean();
 def user           = props['user'];
 def password       = props['password'];
 def lockPath       = props['lockPath'];
+def preCMD       = props['preCMD'];
+def postCMD       = props['postCMD'];
 
 def id = null
 if (user != null && user.trim().length() > 0) {
@@ -115,9 +117,11 @@ if (!workDir.isDirectory()) {
   
 def command = [pcliPath]
 //command: C:\Program Files (x86)\Serena\vm\win64\bin\pcli.exe Get 
-// -y -o -bp/ -l -idAdmin:**** -pr\\VMFS\DEOM -r1.0 -aD:\ws\Judy\. /folder -z /
+// -pr\\VMFS\DEOM -idAdmin:**** -r1.0 -aD -o -l -z /
 // EXPACTED
 // -pr\\VMFS\DEOM -idAdmin:***** -aD:\ws\Judy -l -o -z /
+command << preCMD
+
 command << "Get"
 
 // DEPRECATED Arg "Quietly ignores nonexistent entities."", we need noise.
@@ -135,15 +139,15 @@ if (id != null) {
 
 // Args "-r"
 // Specifies the revision, promotion group, or version to act upon.
-if (label != null && label.trim().length() > 0) {
-    command << "-r" + label.trim()
-}
-else if (branch != null && branch.trim().length() > 0) {
-    command << "-r" + branch.trim()
-}
-else if (promotionGroup != null && promotionGroup.trim().length() > 0) {
-    command << "-g" + promotionGroup.trim() 
-}
+// if (label != null && label.trim().length() > 0) {
+//     command << "-r" + label.trim()
+// }
+// else if (branch != null && branch.trim().length() > 0) {
+//     command << "-r" + branch.trim()
+// }
+// else if (promotionGroup != null && promotionGroup.trim().length() > 0) {
+//     command << "-g" + promotionGroup.trim() 
+// }
 
 //Args "-a" 
 // Specifies an alternate location to place workfiles, rather than the location defined in the
@@ -182,6 +186,7 @@ command << "-l"
 //Args "-z" Includes versioned files in subprojects.
 command << "-z" 
 command << lockPath
+command << postCMD
 
 //------------------------------------------------------------------------------
 // EXECUTE

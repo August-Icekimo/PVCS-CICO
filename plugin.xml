@@ -24,25 +24,25 @@
         <property-ui description="Path to the PVCS database." label="Database Path" type="textBox"/>
       </property>
     
-      <property name="basePath" required="true">
+      <!-- <property name="basePath" required="true">
         <property-ui description="Base path of Get / checked out files" label="Base Path" type="textBox"/>
-      </property>
+      </property> -->
     
-      <property name="projectPath" required="true">
+      <!-- <property name="projectPath">
         <property-ui description="Path to PVCS project (folder) relative to database" label="Project Path" type="textBox"/>
-      </property>
+      </property> -->
     
-      <property name="branch">
+      <!-- <property name="branch">
         <property-ui description="Get the latest files from this branch. (Only specify one of these values)" label="Branch" type="textBox"/>
-      </property>
+      </property> -->
       
-      <property name="label" required="true">
+      <!-- <property name="label" required="true">
         <property-ui description="Get the latest files with this label (Only specify one of these values)" label="Label" type="textBox"/>
-      </property>
+      </property> -->
       
-      <property name="promotionGroup">
+      <!-- <property name="promotionGroup">
         <property-ui description="Get the latest files in this promotion group. (Only specify one of these values)" label="Promotion Group" type="textBox"/>
-      </property>
+      </property> -->
 
       <property name="cleanWorkspace">
         <property-ui description="Erase all files from the workspace before performing export." label="Clean Workspace" type="checkBox"/>
@@ -60,6 +60,13 @@
         <property-ui description="the subproject path to lock / checkout" default-value="\" label="unlockPath" type="textBox"/>
       </property>
 
+      <property name="preCMD">
+        <property-ui description="the pcli command need to place before default" label="preCMD" type="textBox"/>
+      </property>
+      
+      <property name="postCMD" required="true">
+        <property-ui description="the pcli command need to place after default" label="postCMD" type="textBox"/>
+      </property>
     </properties>
     
     <post-processing>
