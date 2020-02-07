@@ -200,6 +200,6 @@ putCommand << postCMD
 //------------------------------------------------------------------------------
 // EXECUTE
 //------------------------------------------------------------------------------
-runCommand('Add new files to the lable', addFilesCommand)
 
-runCommand('PVCS Checkin and lable', putCommand)
+runCommand('PVCS Checkin and label', putCommand)
+runCommand('Add new files to the label', addFilesCommand)
