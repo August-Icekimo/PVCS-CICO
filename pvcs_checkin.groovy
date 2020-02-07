@@ -19,26 +19,30 @@ finally {
 }
 
 def pcliPath       = props['pcliPath'];
+    pcliPath = '\"' + "$pcliPath" + '\"'  
 def databasePath   = props['databasePath'];
 def basePath       = props['basePath'];
 // def projectPath    = props['projectPath'];
 // def branch         = props['branch'];
 def label          = props['label'];
 // def promotionGroup = props['promotionGroup'];
-// def cleanWorkspace = props['cleanWorkspace']?.toBoolean();
 def user           = props['user'];
 def password       = props['password'];
 def changeDescription   = props['changeDescription'];
-def unlockPath           = props['unlockPath'];
+    changeDescription = "-m$changeDescription" + "."
+def unlockPath      = props['unlockPath'];
+def preCMD       = props['preCMD'];
+def postCMD       = props['postCMD'];
+
 def id = null
-if (user != null && user.trim().length() > 0) {
-    if (password != null && password.trim().length() > 0) {
-        id = user.trim() + ":" + password.trim()
+    if (user != null && user.trim().length() > 0) {
+        if (password != null && password.trim().length() > 0) {
+            id = user.trim() + ":" + password.trim()
+        }
+        else {
+            id = user.trim()
+        }
     }
-    else {
-        id = user.trim()
-    }
-}
         
 //------------------------------------------------------------------------------
 def runCommand = {def message, def command ->
@@ -53,7 +57,7 @@ def runCommand = {def message, def command ->
     process.getOutputStream().close()
     process.waitFor()
     if (process.exitValue()) {
-    express exit value in pcli references. 
+    // express exit value in pcli references. 
         switch ( process.exitValue()) {
             case "0":
             println("No problem.")
@@ -89,7 +93,7 @@ def runCommand = {def message, def command ->
             println("An unknown problem.")
             break
         }
-        throw new Exception("GET Command failed with exit code: " + process.exitValue())
+        throw new Exception("PUT Command failed with exit code: " + process.exitValue())
     }
 }
 
@@ -97,12 +101,6 @@ def runCommand = {def message, def command ->
 // PREPARE WORKING DIRECTORY
 // MAY DEPRECATED in future
 //------------------------------------------------------------------------------
-
-// if (cleanWorkspace && workDir.isDirectory()) {
-//     new AntBuilder().delete(includeemptydirs:'true') {
-//         fileset(dir: workDir.path, includes:'**/*', defaultexcludes:'false')
-//     }
-// }
 
 workDir.mkdirs()
 
@@ -113,44 +111,43 @@ if (!workDir.isDirectory()) {
 //------------------------------------------------------------------------------
 // PREPARE COMMAND LINE
 //------------------------------------------------------------------------------
-  
-def command = [pcliPath]
-command << "Put"
+
+def addFilesCommand = [pcliPath]
+addFilesCommand <<  "addfiles"
+addFilesCommand <<  "-pr" + databasePath
+
+if (id != null) {
+    addFilesCommand << "-id" + id
+}
+
+addFilesCommand << "-t."
 
 //Args "-v"
 // Assigns a version label to the new revision. Note, you can use the -yv or -nv option to
 // automatically answer Yes or No to prompts to reassign an existing label.
-command << "-v" + label
-//Args "-yv" 
-// Reassigns the version label specified by the -v option to the new revision, if the version
-// label exists.
-command << "-yv"
+addFilesCommand << "-v" + label
 
-//Args "-m"
-// Specifies the change description for the revision.
-// -mdescription specifies a description at the command-line.
-// To end the description, place a period (.) on a line by itself.
-changeDescription = "-m" + changeDescription + "."
+//Args "-z" 
+// Includes revisions in subprojects.
+addFilesCommand << "-z"
+addFilesCommand << basePath + "\\" + unlockPath
 
-//Args "-bp"
-// Specifies the base project path to use in calculating workfile locations when -a or -o has
-// been specified. For multiple-file operations, path must be the entity path to a common
-// parent of each of the items being checked in.
-command << "-bp" + basePath
+def putCommand = [pcliPath]
 
-//Args "-ym" 
-// Uses the change description specified by the -m option for all versioned items.
-command << "-ym"
+//Funnel the command you are trying to execute through the run command,
+//  and pass it either -y or -n. Since the run command strips quotes
+//  by default it is wise to also pass it the -ns (no strip) option.
+putCommand << preCMD
 
-//Args "-nf" 
-// Aborts the Put operation if the workfile is unchanged or older.
-command << "-nf"
+putCommand << "Put"
+
+putCommand << "-pr" + databasePath
+
 
 if (id != null) {
-    command << "-id" + id
+    putCommand << "-id" + id
 }
 
-command << "-pr" + databasePath
 // if (label != null && label.trim().length() > 0) {
 //     command << "-r" + label.trim()
 // }
@@ -160,21 +157,49 @@ command << "-pr" + databasePath
 // else if (promotionGroup != null && promotionGroup.trim().length() > 0) {
 //     command << "-g" + promotionGroup.trim() 
 // }
+putCommand << "-v" + label
+
+//Args "-yv" 
+// Reassigns the version label specified by the -v option to the new revision, if the version
+// label exists.
+putCommand << "-yv"
+
+//Args "-m"
+// Specifies the change description for the revision.
+// -mdescription specifies a description at the command-line.
+// To end the description, place a period (.) on a line by itself.
+putCommand << changeDescription
+
+//Args "-bp"
+// Specifies the base project path to use in calculating workfile locations when -a or -o has
+// been specified. For multiple-file operations, path must be the entity path to a common
+// parent of each of the items being checked in.
+// command << "-bp" + basePath
+
+//Args "-ym" 
+// Uses the change description specified by the -m option for all versioned items.
+putCommand << "-ym"
+
+//Args "-nf" 
+// Aborts the Put operation if the workfile is unchanged or older.
+putCommand << "-nf"
 
 //Args "-a" 
 // Specifies an alternate location from which to check in workfiles, rather than the location to
 // which they were checked out. The check out location is used unless you specify either the
 // -a or -fw option
-command << "-a" + workDir.absolutePath
-command << projectPath
-
+// command << "-a" + workDir.absolutePath
+// command << projectPath
 
 //Args "-z" 
 // Includes revisions in subprojects.
-command << "-z" 
-command << "/" + unlockPath
+putCommand << "-z" 
+putCommand << "/" + unlockPath
+
+putCommand << postCMD
 //------------------------------------------------------------------------------
 // EXECUTE
 //------------------------------------------------------------------------------
+runCommand('Add new files to the lable', addFilesCommand)
 
-runCommand('PVCS Checkin and lable', command)
+runCommand('PVCS Checkin and lable', putCommand)

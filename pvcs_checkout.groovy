@@ -19,6 +19,7 @@ finally {
 }
 
 def pcliPath       = props['pcliPath'];
+pcliPath = '\"' + "$pcliPath" + '\"' 
 def databasePath   = props['databasePath'];
 def basePath       = props['basePath'];
 // def projectPath    = props['projectPath'];
@@ -34,14 +35,14 @@ def postCMD       = props['postCMD'];
 
 // pcli take " -idUsername:Password format"
 def id = null
-if (user != null && user.trim().length() > 0) {
-    if (password != null && password.trim().length() > 0) {
-        id = user.trim() + ":" + password.trim()
+    if (user != null && user.trim().length() > 0) {
+        if (password != null && password.trim().length() > 0) {
+            id = user.trim() + ":" + password.trim()
+        }
+        else {
+            id = user.trim()
+        }
     }
-    else {
-        id = user.trim()
-    }
-}
         
 //------------------------------------------------------------------------------
 def runCommand = {def message, def command ->
@@ -92,7 +93,7 @@ def runCommand = {def message, def command ->
             println("An unknown problem.")
             break
         }
-        throw new Exception("GET Command failed with exit code: " + process.exitValue())
+        throw new Exception("GET command failed with exit code: " + process.exitValue())
     }
 }
 
@@ -113,39 +114,44 @@ if (!workDir.isDirectory()) {
 }
 
 //------------------------------------------------------------------------------
-// PREPARE COMMAND LINE
+// PREPARE command LINE
 //------------------------------------------------------------------------------
-  
-def command = [pcliPath]
+def readOnlyCommand = []
+readOnlyCommand << "C:\\windows\\system32\\cmd.exe" 
+readOnlyCommand << "/C"
+readOnlyCommand << "CD $basePath\\$lockPath & ATTRIB /S +R " 
+ 
+def getCommand = [pcliPath]
 
 //Funnel the command you are trying to execute through the run command,
 //  and pass it either -y or -n. Since the run command strips quotes
 //  by default it is wise to also pass it the -ns (no strip) option.
-command << preCMD
+//  However, air
+getCommand << preCMD
 
-command << "Get"
+getCommand << "Get"
 
 // DEPRECATED Arg "Quietly ignores nonexistent entities."", we need noise.
 //command << "-qe"
 
 // Args "-pr" 
 // Sets the current project database for this command execution.
-command << "-pr" + databasePath
+getCommand << "-pr" + databasePath
 
 if (id != null) {
-    command << "-id" + id
+    getCommand << "-id" + id
 }
 
 // Args "-r"
 // Specifies the revision, promotion group, or version to act upon.
 // if (label != null && label.trim().length() > 0) {
-//     command << "-r" + label.trim()
+//     getCommand << "-r" + label.trim()
 // }
 // else if (branch != null && branch.trim().length() > 0) {
-//     command << "-r" + branch.trim()
+//     getCommand << "-r" + branch.trim()
 // }
 // else if (promotionGroup != null && promotionGroup.trim().length() > 0) {
-//     command << "-g" + promotionGroup.trim() 
+//     getCommand << "-g" + promotionGroup.trim() 
 // }
 
 //Args "-a" 
@@ -159,8 +165,8 @@ if (id != null) {
 //  original name.
 //  If the -bp option is used, the leafname is always assumed to be a directory; additional
 //  subdirectories may be created depending on how the -bp option was used.
-// command << "-a" + workDir.absolutePath + lockPath
-command << "-a" + basePath + "\\" + lockPath // Windows Style
+// getCommand << "-a" + workDir.absolutePath + lockPath
+getCommand << "-a" + basePath + "\\" + lockPath // Windows Style
 
 // Args "-o" 
 // Overrides the workfile locations defined in the project and versioned files,
@@ -168,28 +174,31 @@ command << "-a" + basePath + "\\" + lockPath // Windows Style
 // project and subprojects. Note if you do not use this option, any versioned file or
 // project that has an absolute workfile location associated with it will be copied to
 // that workfile location, even if you specify a workspace or use the -a option.
-command << "-o"
+getCommand << "-o"
 
 // Args "-bp" 
 // Specifies the base project path to use in calculating workfile locations when
 // the -a option has been specified.
-//command << "-bp" + basePath
+//getCommand << "-bp" + basePath
 
 // Args "-l"
 // Locks the revision of the file you are getting. Optionally, allows you to specify the revision
 // to lock. By default, the default revision defined for the workspace is acted on. Note the revision
 // was assign with the -r args below.
-command << "-l"
+getCommand << "-l"
 
 //command << projectPath
 
 //Args "-z" Includes versioned files in subprojects.
-command << "-z" 
-command << "/" + lockPath
-command << postCMD
+getCommand << "-z" 
+getCommand << "/" + lockPath
+
+getCommand << postCMD
 
 //------------------------------------------------------------------------------
 // EXECUTE
 //------------------------------------------------------------------------------
+// By changing files to readonly, then PVCS won't warn to checkout.
+runCommand('Change Files to R attribute.', readOnlyCommand)
 
-runCommand('PVCS Checkout and lock', command)
+runCommand('PVCS Checkout and lock', getCommand)

@@ -5,7 +5,7 @@
     <description>
       Support for checkin checkout from PVCS.
     </description>
-    <tag>Repositories/Source/PVCS</tag>
+    <tag>Repositories/Source</tag>
   </header>
   
   <!-- ==================================== -->
@@ -25,7 +25,7 @@
       </property>
     
       <property name="basePath" required="true">
-        <property-ui description="Base path of Get / checked out files, -a" default-value="D:\var\wrk\${p:component.name}" label="Worksoace Path" type="textBox"/>
+        <property-ui description="Base path of Get / checked out files, -a" default-value="D:\var\wrk\${p:component.name}" label="Workspace Path" type="textBox"/>
       </property>
     
       <!-- <property name="projectPath">
@@ -116,7 +116,7 @@
       </property> -->
       
       <property name="label" required="true">
-        <property-ui description="Put the latest files with this label (Only specify one of these values)" label="Label" type="textBox"/>
+        <property-ui description="Put the latest files with this label (Only specify one of these values)" label="Version Label" type="textBox"/>
       </property>
       
       <!-- <property name="promotionGroup">
@@ -143,6 +143,14 @@
         <property-ui description="The description to use in change history." label="changeDescription" type="textBox"/>
       </property>
 
+      <property name="preCMD">
+        <property-ui description="the pcli command need to place before get" label="preCMD" type="textBox"/>
+      </property>
+      
+      <property name="postCMD">
+        <property-ui description="the pcli command need to place after get" label="postCMD" type="textBox"/>
+      </property>
+   
     </properties>
      
 

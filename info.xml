@@ -104,10 +104,10 @@
   </meta-html>
     
   <!-- Do not change the release-version, the build process injects it. -->
-  <release-version>215</release-version>
+  <release-version>217</release-version>
 
     <!-- Do not change the server-version, the build process injects it. -->
-    <server-version>1.2.2</server-version>
+    <server-version>1.3.1</server-version>
 
     <release-notes>
     <!--
