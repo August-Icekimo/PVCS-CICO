@@ -119,7 +119,7 @@ if (!workDir.isDirectory()) {
 def readOnlyCommand = []
 readOnlyCommand << "C:\\windows\\system32\\cmd.exe" 
 readOnlyCommand << "/C"
-readOnlyCommand << "CD $basePath\\$lockPath & ATTRIB /S +R " 
+readOnlyCommand << "CD $basePath & ATTRIB /S +R " 
  
 def getCommand = [pcliPath]
 
@@ -166,7 +166,7 @@ if (id != null) {
 //  If the -bp option is used, the leafname is always assumed to be a directory; additional
 //  subdirectories may be created depending on how the -bp option was used.
 // getCommand << "-a" + workDir.absolutePath + lockPath
-getCommand << "-a" + basePath + "\\" + lockPath // Windows Style
+getCommand << "-a" + basePath // Windows Style
 
 // Args "-o" 
 // Overrides the workfile locations defined in the project and versioned files,

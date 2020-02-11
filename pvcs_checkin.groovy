@@ -29,6 +29,7 @@ def label          = props['label'];
 def user           = props['user'];
 def password       = props['password'];
 def changeDescription   = props['changeDescription'];
+    //  test changeDescription \r\n
     changeDescription = "-m$changeDescription" + "."
 def unlockPath      = props['unlockPath'];
 def preCMD       = props['preCMD'];
@@ -130,7 +131,7 @@ addFilesCommand << "-v" + label
 //Args "-z" 
 // Includes revisions in subprojects.
 addFilesCommand << "-z"
-addFilesCommand << basePath + "\\" + unlockPath
+addFilesCommand << basePath
 
 def putCommand = [pcliPath]
 
@@ -194,7 +195,7 @@ putCommand << "-nf"
 //Args "-z" 
 // Includes revisions in subprojects.
 putCommand << "-z" 
-putCommand << "/" + unlockPath
+putCommand << unlockPath
 
 putCommand << postCMD
 //------------------------------------------------------------------------------
