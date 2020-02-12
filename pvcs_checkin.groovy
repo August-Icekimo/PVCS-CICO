@@ -125,6 +125,14 @@ def addCommand = [pcliPath]
 addCommand <<  "addfiles"
 addCommand <<  "-pr" + databasePath
 
+//Args  -pp -ppproject_path
+// Specifies the project or folder to which the files will be added. This option overrides the
+// value of the PCLI_PP variable for a single command execution. If no project is specified,
+// the PCLI_PP variable is used.
+def addfilesPath = ( props['unlockPath'] =~ /^\/.*\// )
+println(" -pp $addfilesPath[0]")
+addCommand << "-pp" + addfilesPath[0]
+
 if (id != null) {
     addCommand << "-id" + id
 }
