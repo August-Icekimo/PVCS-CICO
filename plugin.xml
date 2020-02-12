@@ -17,7 +17,8 @@
   
     <properties>
       <property name="pcliPath" required="true">
-        <property-ui description="Path to the PCLI executable." label="PCLI Path" default-value="C:\Program Files (x86)\Serena\vm\win32\bin\pcli.exe" type="textBox"/>
+        <property-ui description="Path to the PCLI executable." label="PCLI Path" default-value="C:\Program Files (x86)\Serena\vm\win64\bin\pcli.exe" type="textBox"/>
+        <!-- <property-ui description="Path to the PCLI executable." label="PCLI Path" default-value="C:\Program Files (x86)\Serena\vm\win32\bin\pcli.exe" type="textBox"/> -->
       </property>
     
       <property name="databasePath" required="true">
@@ -25,7 +26,7 @@
       </property>
     
       <property name="basePath" required="true">
-        <property-ui description="Base path of Get/checked out files, -a this path" default-value="D:\var\wrk\${p:component.name}" label="Alter PCLI work path" type="textBox"/>
+        <property-ui description="Working Path of Get/checked out files, -a this path" default-value="D:\var\wrk\${p:component.name}" label="Alter PCLI work path" type="textBox"/>
       </property>
     
       <!-- <property name="projectPath">
@@ -57,17 +58,18 @@
       </property>
 
       <property name="lockPath" required="true">
-        <property-ui description="the Artifacts foldername to checkoutand lock" default-value="bin" label="lockPath" type="textBox"/>
+        <property-ui description="the Artifacts foldername to checkoutand lock" default-value="bin" label="lockPath in VMFS" type="textBox"/>
       </property>
 
-      <property name="preCMD">
+      <!-- <property name="preCMD">
         <property-ui description="the pcli command need to place before get" label="preCMD" type="textBox"/>
       </property>
       
       <property name="postCMD">
         <property-ui description="the pcli command need to place after get" label="postCMD" type="textBox"/>
-      </property>
-    </properties>
+      </property> -->
+
+    </properties> 
     
     <post-processing>
       <![CDATA[
@@ -96,7 +98,8 @@
     <properties>
       <property name="pcliPath" required="true">
        <!-- chinese description test -->
-        <property-ui description="Path to the PCLI executable." label="PCLI Path" default-value="C:\Program Files (x86)\Serena\vm\win32\bin\pcli.exe" type="textBox"/>
+        <property-ui description="Path to the PCLI executable." label="PCLI Path" default-value="C:\Program Files (x86)\Serena\vm\win64\bin\pcli.exe" type="textBox"/>
+        <!-- <property-ui description="Path to the PCLI executable." label="PCLI Path" default-value="C:\Program Files (x86)\Serena\vm\win32\bin\pcli.exe" type="textBox"/> -->
       </property>
     
       <property name="databasePath" required="true">
@@ -104,7 +107,7 @@
       </property>
     
       <property name="basePath">
-        <property-ui description="Base path of Put/checked in files" default-value="D:\var\wrk\${p:component.name}" label="Alter PCLI work path" type="textBox"/>
+        <property-ui description="Working Path of Put/checked in files" default-value="D:\var\wrk\${p:component.name}" label="Alter PCLI work path" type="textBox"/>
       </property>
     
       <!-- <property name="projectPath">
@@ -116,7 +119,7 @@
       </property> -->
       
       <property name="label" required="true">
-        <property-ui description="Put the latest files with this label (Only specify one of these values)" label="Label while build success" type="textBox"/>
+        <property-ui description="Put the latest files with this label, : + - * &quot; &apos; CR LF  are not allowed " label="Label while build success" type="textBox"/>
       </property>
       
       <!-- <property name="promotionGroup">
@@ -136,20 +139,20 @@
       </property>
 
       <property name="unlockPath" required="true">
-        <property-ui description="the subproject path to unlock/checkout" default-value="\" label="unlockPath" type="textBox"/>
+        <property-ui description="the folder path to unlock/checkout, -z" default-value="\bin" label="unlockPath in VMFS" type="textBox"/>
       </property>
       
       <property name="changeDescription" required="true">
-        <property-ui description="The description to use in change history." label="changeDescription" type="textBox"/>
+        <property-ui description="The description to use in change history." default-value="Max 4064 characters." label="changeDescription" type="textAreaBox"/>
       </property>
 
-      <property name="preCMD">
+      <!-- <property name="preCMD">
         <property-ui description="the pcli command need to place before get" label="preCMD" type="textBox"/>
       </property>
       
       <property name="postCMD">
         <property-ui description="the pcli command need to place after get" label="postCMD" type="textBox"/>
-      </property>
+      </property> -->
    
     </properties>
      

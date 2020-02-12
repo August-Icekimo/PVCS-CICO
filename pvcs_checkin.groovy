@@ -25,15 +25,16 @@ def basePath       = props['basePath'];
 // def projectPath    = props['projectPath'];
 // def branch         = props['branch'];
 def label          = props['label'];
+// label = "-v\"$label\""
+label = "-v\\\"$label\\\"" //escape if space inside
 // def promotionGroup = props['promotionGroup'];
 def user           = props['user'];
 def password       = props['password'];
 def changeDescription   = props['changeDescription'];
-    //  test changeDescription \r\n
-    changeDescription = "-m$changeDescription" + "."
+    // changeDescription = "-m\\\"$changeDescription\\\"" + "."
 def unlockPath      = props['unlockPath'];
-def preCMD       = props['preCMD'];
-def postCMD       = props['postCMD'];
+// def preCMD       = props['preCMD'];
+// def postCMD       = props['postCMD'];
 
 def id = null
     if (user != null && user.trim().length() > 0) {
@@ -100,65 +101,70 @@ def runCommand = {def message, def command ->
 
 //------------------------------------------------------------------------------
 // PREPARE WORKING DIRECTORY
-// MAY DEPRECATED in future
+// The place to put $changeDescription
 //------------------------------------------------------------------------------
 
+println("Agent workDir: ${workDir}.absolutePath ")
 workDir.mkdirs()
 
 if (!workDir.isDirectory()) {
     throw new Exception("Could not create working directory ${workDir}")
 }
+def curTime = System.currentTimeMillis()
+def description = new File("desc${curTime}")
+description.deleteOnExit()
+description.createNewFile()
+description.write("")
+description.write(changeDescription)
 
 //------------------------------------------------------------------------------
 // PREPARE COMMAND LINE
 //------------------------------------------------------------------------------
 
-def addFilesCommand = [pcliPath]
-addFilesCommand <<  "addfiles"
-addFilesCommand <<  "-pr" + databasePath
+def addCommand = [pcliPath]
+addCommand <<  "addfiles"
+addCommand <<  "-pr" + databasePath
 
 if (id != null) {
-    addFilesCommand << "-id" + id
+    addCommand << "-id" + id
 }
 
-addFilesCommand << "-t."
+addCommand << "-t."
 
 //Args "-v"
 // Assigns a version label to the new revision. Note, you can use the -yv or -nv option to
 // automatically answer Yes or No to prompts to reassign an existing label.
-addFilesCommand << "-v" + label
+addCommand << label
 
 //Args "-z" 
 // Includes revisions in subprojects.
-addFilesCommand << "-z"
-addFilesCommand << basePath
+addCommand << "-z"
+addCommand << basePath
 
 def putCommand = [pcliPath]
-
 //Funnel the command you are trying to execute through the run command,
 //  and pass it either -y or -n. Since the run command strips quotes
 //  by default it is wise to also pass it the -ns (no strip) option.
-putCommand << preCMD
+// putCommand << preCMD
 
 putCommand << "Put"
 
 putCommand << "-pr" + databasePath
-
 
 if (id != null) {
     putCommand << "-id" + id
 }
 
 // if (label != null && label.trim().length() > 0) {
-//     command << "-r" + label.trim()
+//     putCommand << "-r" + label.trim()
 // }
 // else if (branch != null && branch.trim().length() > 0) {
-//     command << "-r" + branch.trim()
+//     putCommand << "-r" + branch.trim()
 // }
 // else if (promotionGroup != null && promotionGroup.trim().length() > 0) {
-//     command << "-g" + promotionGroup.trim() 
+//     putCommand << "-g" + promotionGroup.trim() 
 // }
-putCommand << "-v" + label
+putCommand << label
 
 //Args "-yv" 
 // Reassigns the version label specified by the -v option to the new revision, if the version
@@ -167,9 +173,8 @@ putCommand << "-yv"
 
 //Args "-m"
 // Specifies the change description for the revision.
-// -mdescription specifies a description at the command-line.
-// To end the description, place a period (.) on a line by itself.
-putCommand << changeDescription
+// -m@file obtains a description from a text file.
+putCommand << "-m@$description.absolutePath"
 
 //Args "-bp"
 // Specifies the base project path to use in calculating workfile locations when -a or -o has
@@ -185,22 +190,16 @@ putCommand << "-ym"
 // Aborts the Put operation if the workfile is unchanged or older.
 putCommand << "-nf"
 
-//Args "-a" 
-// Specifies an alternate location from which to check in workfiles, rather than the location to
-// which they were checked out. The check out location is used unless you specify either the
-// -a or -fw option
-// command << "-a" + workDir.absolutePath
-// command << projectPath
-
 //Args "-z" 
 // Includes revisions in subprojects.
 putCommand << "-z" 
 putCommand << unlockPath
 
-putCommand << postCMD
+// putCommand << postCMD
+
 //------------------------------------------------------------------------------
 // EXECUTE
 //------------------------------------------------------------------------------
 
-runCommand('PVCS Checkin and label', putCommand)
-runCommand('Add new files to the label', addFilesCommand)
+runCommand('PVCS Checkin and label :\n', putCommand)
+runCommand('Add new files to the label :\n', addCommand)

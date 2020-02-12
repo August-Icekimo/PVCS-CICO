@@ -30,8 +30,8 @@ def basePath       = props['basePath'];
 def user           = props['user'];
 def password       = props['password'];
 def lockPath       = props['lockPath'];
-def preCMD       = props['preCMD'];
-def postCMD       = props['postCMD'];
+// def preCMD       = props['preCMD'];
+// def postCMD       = props['postCMD'];
 
 // pcli take " -idUsername:Password format"
 def id = null
@@ -127,7 +127,7 @@ def getCommand = [pcliPath]
 //  and pass it either -y or -n. Since the run command strips quotes
 //  by default it is wise to also pass it the -ns (no strip) option.
 //  However, air
-getCommand << preCMD
+// getCommand << preCMD
 
 getCommand << "Get"
 
@@ -191,14 +191,14 @@ getCommand << "-l"
 
 //Args "-z" Includes versioned files in subprojects.
 getCommand << "-z" 
-getCommand << "/" + lockPath
+getCommand << lockPath
 
-getCommand << postCMD
+// getCommand << postCMD
 
 //------------------------------------------------------------------------------
 // EXECUTE
 //------------------------------------------------------------------------------
 // By changing files to readonly, then PVCS won't warn to checkout.
-runCommand('Change Files to R attribute.', readOnlyCommand)
+runCommand('Change Files to R attribute, in case.', readOnlyCommand)
 
 runCommand('PVCS Checkout and lock', getCommand)
