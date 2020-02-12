@@ -104,7 +104,7 @@ def runCommand = {def message, def command ->
 // The place to put $changeDescription
 //------------------------------------------------------------------------------
 
-println("Agent workDir: ${workDir}.absolutePath ")
+// println("Agent workDir: ${workDir}.absolutePath ")
 workDir.mkdirs()
 
 if (!workDir.isDirectory()) {
@@ -130,7 +130,7 @@ addCommand <<  "-pr" + databasePath
 // value of the PCLI_PP variable for a single command execution. If no project is specified,
 // the PCLI_PP variable is used.
 def addfilesPath = ( props['unlockPath'] =~ /^\/.*\// )
-println(" -pp $addfilesPath[0]")
+// println(" -pp $addfilesPath[0]")
 addCommand << "-pp" + addfilesPath[0]
 
 if (id != null) {
