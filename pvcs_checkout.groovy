@@ -19,7 +19,14 @@ finally {
 }
 
 def pcliPath       = props['pcliPath'];
-pcliPath = '\"' + "$pcliPath" + '\"' 
+File pcliexe = new File(pcliPath)
+    if ( pcliexe.exists()){
+        pcliPath = '\"' + "$pcliPath" + '\"'
+    } else {
+        println("Please check if PCLI correctly installed : $pcliPath" )
+    }
+pcliexe = null
+
 def databasePath   = props['databasePath'];
 def basePath       = props['basePath'];
 // def projectPath    = props['projectPath'];
@@ -59,9 +66,9 @@ def runCommand = {def message, def command ->
     // express exit value in pcli references. 
     if (process.exitValue()) {
         switch ( process.exitValue()) {
-            case "0":
-            println("No problem.")
-            break
+            // case "0":
+            // println("No problem.")
+            // break
             case "-2":
             println("PCLI command not found.")
             break
@@ -98,7 +105,7 @@ def runCommand = {def message, def command ->
 }
 
 //------------------------------------------------------------------------------
-// PREPARE WORKING DIRECTORY
+// PREPARE WORKING DIRECTORY and check PCLI islv.ini
 //------------------------------------------------------------------------------
 
 // if (cleanWorkspace && workDir.isDirectory()) {
@@ -106,6 +113,7 @@ def runCommand = {def message, def command ->
 //         fileset(dir: workDir.path, includes:'**/*', defaultexcludes:'false')
 //     }
 // }
+
 
 workDir.mkdirs()
 
@@ -119,7 +127,7 @@ if (!workDir.isDirectory()) {
 def readOnlyCommand = []
 readOnlyCommand << "C:\\windows\\system32\\cmd.exe" 
 readOnlyCommand << "/C"
-readOnlyCommand << "CD $basePath & ATTRIB /S +R " 
+readOnlyCommand << "CD $basePath & ATTRIB /S +R & CD $workDir & ATTRIB /S +R" 
  
 def getCommand = [pcliPath]
 
