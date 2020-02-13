@@ -25,8 +25,13 @@ def basePath       = props['basePath'];
 // def projectPath    = props['projectPath'];
 // def branch         = props['branch'];
 def label          = props['label'];
-// label = "-v\"$label\""
-label = "-v\\\"$label\\\"" //escape if space inside
+    def limitCR = /[-\+\*\\\"\\\']/
+    def labelG = (label =~ limitCR )
+    if (labelG) {
+        label = label.replaceAll( limitCR, "_")
+        println( "You CANNOT use -+*\'\" in label. Your New Label :\n $label")
+    }
+    label = "-v\\\"$label\\\"" //escape if space inside
 // def promotionGroup = props['promotionGroup'];
 def user           = props['user'];
 def password       = props['password'];
