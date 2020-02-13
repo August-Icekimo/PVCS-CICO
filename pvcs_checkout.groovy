@@ -114,6 +114,11 @@ def runCommand = {def message, def command ->
 //     }
 // }
 
+File islv = new File("C:\\windows\\islv.ini")
+    if ( !islv.exists()){
+        println("Beware, copy your islv.ini to C:\\windows\\ may helps.")
+    }
+islv = null
 
 workDir.mkdirs()
 
