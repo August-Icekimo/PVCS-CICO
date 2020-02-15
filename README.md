@@ -1,5 +1,5 @@
 # PVCS-CICO
-This plugin is design for MicorFocus/ Serena Deploy Automation.
+This plugin is design for Micro Focus/ Serena Deploy Automation.
 contorl pcli to check in and check out codes/ artifacts.
 
 ## How to use

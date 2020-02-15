@@ -7,6 +7,6 @@ SET time=%t%
 
 ECHO zipping...
 
-"C:\Program Files\7-Zip\7z.exe" a -tzip "%CD%\PVCS-CICO-%d%-%t%.zip" -xr!.git -x!*.md -x!*.cmd -x!*.ps1 -x!*.zip
+"C:\Program Files\7-Zip\7z.exe" a -tzip "%CD%\PVCS-CICO-%d%-%t%.zip" -xr!.git -x!*.md -x!*.cmd -x!*.ps1 -x!*.zip -x!*.bat
 
 ECHO Done!
