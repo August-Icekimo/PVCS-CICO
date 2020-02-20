@@ -132,7 +132,7 @@ if (!workDir.isDirectory()) {
 def readOnlyCommand = []
 readOnlyCommand << "C:\\windows\\system32\\cmd.exe" 
 readOnlyCommand << "/C"
-readOnlyCommand << "CD $basePath & ATTRIB /S +R & CD $workDir & ATTRIB /S +R" 
+readOnlyCommand << "CD $basePath & ATTRIB /S +R" 
  
 def getCommand = [pcliPath]
 
